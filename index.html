@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Medilink - NFC-Enabled Emergency Medical Information Access System. Critical medical information, one tap away. Prototype for hackathon and ideathon demonstration.">
+  <meta name="theme-color" content="#0b132b">
+  <title>MEDILINK — Emergency Medical Access, One Tap Away</title>
+
+  <!-- OpenGraph / Social Meta Tags -->
+  <meta property="og:title" content="MEDILINK — NFC Emergency Medical Access">
+  <meta property="og:description" content="The tag stores the link — the server stores the profile. NFC-enabled emergency medical access prototype.">
+  <meta property="og:type" content="website">
+
+  <!-- Relative CSS link for static GitHub Pages compatibility -->
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+  <!-- ================================================================= -->
+  <!-- TOP EMERGENCY DIRECT MODE BANNER (Shown when ?profile=... is set) -->
+  <!-- ================================================================= -->
+  <aside id="direct-profile-banner" class="emergency-alert-banner hidden" role="alert" aria-live="assertive">
+    <div class="banner-inner container">
+      <div class="banner-content">
+        <span class="banner-icon-pulse">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+            <line x1="12" y1="9" x2="12" y2="13"></line>
+            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+          </svg>
+        </span>
+        <div class="banner-text">
+          <strong>EMERGENCY ACCESS DIRECT LINK DETECTED</strong>
+          <span>Viewing verified NFC-linked profile record. Fictional demo data for Hackathon presentation.</span>
+        </div>
+      </div>
+      <div class="banner-actions">
+        <button type="button" id="btn-banner-exit" class="btn btn-sm btn-outline-light">View Full Site</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ================================================================= -->
+  <!-- GLOBAL NAVIGATION HEADER                                          -->
+  <!-- ================================================================= -->
+  <header class="site-header" id="site-header">
+    <div class="header-container container">
+      <!-- Brand / Logo -->
+      <a href="./index.html" class="brand-logo" aria-label="Medilink Home">
+        <div class="logo-symbol" aria-hidden="true">
+          <!-- Combined Medical Cross + NFC Radiating Waves Icon -->
+          <svg width="34" height="34" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="40" height="40" rx="10" fill="#0B132B"/>
+            <!-- Medical Cross Center -->
+            <path d="M16 11H24V16H29V24H24V29H16V24H11V16H16V11Z" fill="#0284C7"/>
+            <path d="M18 13H22V18H27V22H22V27H18V22H13V18H18V13Z" fill="#38BDF8"/>
+            <!-- NFC Signal Wave Overlay -->
+            <path d="M26 12C28.8 14.8 28.8 19.2 26 22" stroke="#EF4444" stroke-width="2.2" stroke-linecap="round"/>
+            <path d="M29 9C33.2 13.2 33.2 19.8 29 24" stroke="#EF4444" stroke-width="2.2" stroke-linecap="round" opacity="0.75"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-name">MEDILINK</span>
+          <span class="brand-tagline">Emergency Medical Access</span>
+        </div>
+      </a>
+
+      <!-- Desktop Navigation Menu -->
+      <nav class="nav-menu" id="nav-menu" aria-label="Primary Navigation">
+        <ul class="nav-list">
+          <li><a href="#hero" class="nav-link active">Home</a></li>
+          <li><a href="#how-it-works" class="nav-link">How It Works</a></li>
+          <li><a href="#simulation" class="nav-link">NFC Simulation</a></li>
+          <li><a href="#profile" class="nav-link">Emergency Profile</a></li>
+          <li><a href="#technology" class="nav-link">Technology</a></li>
+          <li><a href="#security" class="nav-link">Security & Privacy</a></li>
+          <li><a href="#why-medilink" class="nav-link">Why Medilink</a></li>
+        </ul>
+      </nav>
+
+      <!-- Header CTA & Mobile Toggle -->
+      <div class="header-cta-group">
+        <a href="#profile" class="btn btn-primary btn-nav-cta">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+          <span>View Demo Profile</span>
+        </a>
+
+        <!-- Mobile Menu Hamburger Button -->
+        <button type="button" class="mobile-toggle" id="mobile-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle navigation menu">
+          <span class="hamburger-bar"></span>
+          <span class="hamburger-bar"></span>
+          <span class="hamburger-bar"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================================================================= -->
+  <!-- MAIN CONTENT AREA                                                 -->
+  <!-- ================================================================= -->
+  <main id="main-content">
+
+    <!-- ------------------------------------------------------------- -->
+    <!-- SECTION 1: HERO SECTION                                       -->
+    <!-- ------------------------------------------------------------- -->
+    <section class="hero-section" id="hero">
+      <div class="container hero-container">
+        <!-- Hero Text -->
+        <div class="hero-text-content">
+          <div class="badge-pill">
+            <span class="badge-dot pulse"></span>
+            <span class="badge-label">NFC-ENABLED EMERGENCY PROFILE</span>
+          </div>
+
+          <h1 class="hero-headline">
+            Critical Medical Information.<br>
+            <span class="highlight-cyan">One Tap Away.</span>
+          </h1>
+
+          <p class="hero-subhead">
+            Medilink connects an NFC-enabled wearable to a secure web-based emergency profile, helping authorized responders access essential information quickly.
+          </p>
+
+          <!-- Action Buttons -->
+          <div class="hero-actions">
+            <a href="#profile" class="btn btn-primary btn-lg" id="btn-open-demo-profile">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+              </svg>
+              <span>Open Demo Profile</span>
+            </a>
+
+            <a href="#how-it-works" class="btn btn-secondary btn-lg">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polygon points="10 8 16 12 10 16 10 8"></polygon>
+              </svg>
+              <span>How It Works</span>
+            </a>
+
+            <a href="#simulation" class="btn btn-outline btn-lg">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path>
+                <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path>
+              </svg>
+              <span>Try Tap Simulation</span>
+            </a>
+          </div>
+
+          <!-- Flow Sequence Tag -->
+          <div class="flow-sequence-badge" aria-label="System Workflow">
+            <span class="flow-step">TAP NFC</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-step">OPEN PROFILE</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-step highlight">ACT</span>
+          </div>
+
+          <!-- Core Architecture Thesis Quote -->
+          <div class="core-quote-card">
+            <div class="quote-icon" aria-hidden="true">💡</div>
+            <p class="quote-text">
+              <strong>Core Engineering Principle:</strong>
+              <em>"The tag stores the link — the server stores the profile."</em>
+            </p>
+          </div>
+        </div>
+
+        <!-- Hero Visual: NFC Wristband & Smartphone Graphic -->
+        <div class="hero-visual-content">
+          <div class="nfc-interaction-card">
+            <!-- Ambient Glow Effect -->
+            <div class="ambient-glow"></div>
+
+            <div class="device-mockup-wrapper">
+              <!-- Smartphone Graphic -->
+              <div class="phone-mockup">
+                <div class="phone-speaker"></div>
+                <div class="phone-screen">
+                  <div class="phone-screen-header">
+                    <span class="phone-time">11:42</span>
+                    <span class="phone-status-icons">NFC 📶 100%</span>
+                  </div>
+                  <div class="phone-screen-body">
+                    <div class="nfc-incoming-toast">
+                      <div class="toast-nfc-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0284C7" stroke-width="2">
+                          <path d="M6 18h8a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2z"></path>
+                          <path d="M12 9v6"></path>
+                          <path d="M9 12h6"></path>
+                        </svg>
+                      </div>
+                      <div class="toast-details">
+                        <span class="toast-title">NFC Tag Scanned</span>
+                        <span class="toast-url">medilink.app?profile=ML-DEMO-001</span>
+                      </div>
+                    </div>
+
+                    <!-- Mini Medical Card on Screen -->
+                    <div class="phone-screen-card">
+                      <div class="screen-card-header">
+                        <span class="screen-pulse-dot"></span>
+                        <span class="screen-card-title">EMERGENCY RECORD</span>
+                      </div>
+                      <div class="screen-card-content">
+                        <div class="screen-row">
+                          <span class="screen-label">Patient:</span>
+                          <span class="screen-val">Aarav Sharma</span>
+                        </div>
+                        <div class="screen-row">
+                          <span class="screen-label">Blood:</span>
+                          <span class="screen-val text-red"><strong>O+ Positive</strong></span>
+                        </div>
+                        <div class="screen-row">
+                          <span class="screen-label">Allergy:</span>
+                          <span class="screen-val text-orange">Penicillin (Severe)</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Animated Radio Frequency NFC Waves -->
+              <div class="rf-waves" aria-hidden="true">
+                <span class="wave wave-1"></span>
+                <span class="wave wave-2"></span>
+                <span class="wave wave-3"></span>
+                <div class="rf-label">13.56 MHz NDEF</div>
+              </div>
+
+              <!-- NFC Wristband Graphic -->
+              <div class="wristband-mockup">
+                <div class="band-strap band-strap-top"></div>
+                <div class="band-module">
+                  <div class="band-chip-badge">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M2 12h20"></path>
+                      <path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-6"></path>
+                      <path d="M12 2a4 4 0 0 0-4 4v6h8V6a4 4 0 0 0-4-4z"></path>
+                    </svg>
+                  </div>
+                  <span class="band-brand">MEDILINK</span>
+                  <span class="band-sub">PASSIVE NFC</span>
+                </div>
+                <div class="band-strap band-strap-bottom"></div>
+              </div>
+            </div>
+
+            <!-- Bottom Caption -->
+            <div class="visual-caption">
+              <span class="badge-mini">PHYSICAL WEARABLE</span>
+              <p>Passive NTAG213 silicon tag • Requires no battery • Opens in standard mobile browser</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ------------------------------------------------------------- -->
+    <!-- SECTION 2: HOW IT WORKS                                       -->
+    <!-- ------------------------------------------------------------- -->
+    <section class="section how-it-works-section" id="how-it-works">
+      <div class="container">
+        <!-- Section Header -->
+        <div class="section-header text-center">
+          <div class="section-kicker">WORKFLOW EXPLAINED</div>
+          <h2 class="section-title">How Medilink Works in 4 Steps</h2>
+          <p class="section-desc">
+            Designed for high-stress emergency situations. Zero app installs, zero Bluetooth pairing, zero battery dependency.
+          </p>
+        </div>
+
+        <!-- 4 Step Cards Grid -->
+        <div class="steps-grid">
+          <!-- Step 01 -->
+          <div class="step-card">
+            <div class="step-number">01</div>
+            <div class="step-icon-wrap">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"></path>
+                <path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v2"></path>
+                <path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8"></path>
+                <path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"></path>
+              </svg>
+            </div>
+            <h3 class="step-title">01 — TAP</h3>
+            <p class="step-text">
+              Bring an NFC-enabled smartphone close to the Medilink wristband (within 2 to 4 centimeters).
+            </p>
+            <div class="step-footer-tag">Passive Induction</div>
+          </div>
+
+          <!-- Step 02 -->
+          <div class="step-card">
+            <div class="step-number">02</div>
+            <div class="step-icon-wrap">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+              </svg>
+            </div>
+            <h3 class="step-title">02 — READ</h3>
+            <p class="step-text">
+              The phone’s NFC antenna reads the standardized NDEF payload stored on the tag's EEPROM.
+            </p>
+            <div class="step-footer-tag">NDEF Standard</div>
+          </div>
+
+          <!-- Step 03 -->
+          <div class="step-card">
+            <div class="step-number">03</div>
+            <div class="step-icon-wrap">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="2" y1="12" x2="22" y2="12"></line>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+              </svg>
+            </div>
+            <h3 class="step-title">03 — OPEN</h3>
+            <p class="step-text">
+              The NDEF message contains a standard HTTPS URL with the patient's unique profile identifier.
+            </p>
+            <div class="step-footer-tag">HTTPS URL / URI Record</div>
+          </div>
+
+          <!-- Step 04 -->
+          <div class="step-card">
+            <div class="step-number">04</div>
+            <div class="step-icon-wrap">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+              </svg>
+            </div>
+            <h3 class="step-title">04 — ACCESS</h3>
+            <p class="step-text">
+              The mobile browser instantly opens the Medilink emergency profile with prioritized clinical data.
+            </p>
+            <div class="step-footer-tag">Zero App Install</div>
+          </div>
+        </div>
+
+        <!-- Architecture Flow Diagram Card -->
+        <div class="architecture-diagram-card">
+          <div class="arch-card-header">
+            <h3 class="arch-title">Medilink System Architecture Diagram</h3>
+            <span class="arch-badge">END-TO-END WORKFLOW</span>
+          </div>
+
+          <!-- Flow Chart Visual Nodes -->
+          <div class="arch-flow-wrapper">
+            <!-- Node 1 -->
+            <div class="arch-node">
+              <div class="node-icon bg-navy">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                  <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                </svg>
+              </div>
+              <div class="node-name">NFC TAG</div>
+              <div class="node-meta">Passive NTAG213 silicon</div>
+            </div>
+
+            <div class="arch-connector">
+              <span class="connector-line"></span>
+              <span class="connector-arrow">➔</span>
+              <span class="connector-desc">13.56 MHz RF</span>
+            </div>
+
+            <!-- Node 2 -->
+            <div class="arch-node">
+              <div class="node-icon bg-blue">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                  <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                </svg>
+              </div>
+              <div class="node-name">NDEF URL</div>
+              <div class="node-meta">URI Record with Profile ID</div>
+            </div>
+
+            <div class="arch-connector">
+              <span class="connector-line"></span>
+              <span class="connector-arrow">➔</span>
+              <span class="connector-desc">OS Intent</span>
+            </div>
+
+            <!-- Node 3 -->
+            <div class="arch-node">
+              <div class="node-icon bg-cyan">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+                  <line x1="12" y1="18" x2="12.01" y2="18"></line>
+                </svg>
+              </div>
+              <div class="node-name">SMARTPHONE</div>
+              <div class="node-meta">iOS & Android Native NFC</div>
+            </div>
+
+            <div class="arch-connector">
+              <span class="connector-line"></span>
+              <span class="connector-arrow">➔</span>
+              <span class="connector-desc">HTTPS Request</span>
+            </div>
+
+            <!-- Node 4 -->
+            <div class="arch-node">
+              <div class="node-icon bg-emerald">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="2" y1="12" x2="22" y2="12"></line>
+                  <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                </svg>
+              </div>
+              <div class="node-name">MEDILINK WEB APP</div>
+              <div class="node-meta">Mobile Responsive Frontend</div>
+            </div>
+
+            <div class="arch-connector">
+              <span class="connector-line"></span>
+              <span class="connector-arrow">➔</span>
+              <span class="connector-desc">Secure Render</span>
+            </div>
+
+            <!-- Node 5 -->
+            <div class="arch-node highlight-node">
+              <div class="node-icon bg-red">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                </svg>
+              </div>
+              <div class="node-name">EMERGENCY PROFILE</div>
+              <div class="node-meta">Blood, Allergies, Contacts</div>
+            </div>
+          </div>
+
+          <!-- Key Takeaway Comparison Grid -->
+          <div class="takeaway-comparison-grid">
+            <div class="takeaway-box tag-side">
+              <div class="takeaway-header">
+                <span class="takeaway-icon">🏷️</span>
+                <h4>TAG STORES LINK</h4>
+              </div>
+              <ul>
+                <li>Lightweight & passive (no battery needed)</li>
+                <li>Static NDEF URI record (e.g. <code>https://.../?profile=ML-001</code>)</li>
+                <li>Write-protectable to prevent tampering</li>
+                <li>Extremely cheap and durable for mass distribution</li>
+              </ul>
+            </div>
+
+            <div class="takeaway-divider">VS</div>
+
+            <div class="takeaway-box server-side">
+              <div class="takeaway-header">
+                <span class="takeaway-icon">☁️</span>
+                <h4>SERVER STORES PROFILE</h4>
+              </div>
+              <ul>
+                <li>Patient medical records stay in secure cloud storage</li>
+                <li>Updates to medication/allergies take effect immediately</li>
+                <li>Can be locked, revoked, or rate-limited at any time</li>
+                <li>Allows audit logging of responder access timestamps</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ------------------------------------------------------------- -->
+    <!-- SECTION 3: NFC TAP SIMULATION                                 -->
+    <!-- ------------------------------------------------------------- -->
+    <section class="section simulation-section" id="simulation">
+      <div class="container">
+        <!-- Section Header -->
+        <div class="section-header text-center">
+          <div class="section-kicker">INTERACTIVE BENCHMARK</div>
+          <h2 class="section-title">NFC Tap Simulation</h2>
+          <p class="section-desc">
+            Test how a first responder or paramedic experiences the physical tap-to-profile workflow using this software simulator.
+          </p>
+        </div>
+
+        <div class="sim-wrapper">
+          <!-- Left: Virtual Wristband & Hardware Control -->
+          <div class="sim-hardware-card">
+            <div class="sim-card-top">
+              <span class="sim-badge">VIRTUAL HARDWARE INTERFACE</span>
+              <span class="sim-status-pill" id="sim-hw-status">READY FOR SCAN</span>
+            </div>
+
+            <!-- Virtual Wristband Interactive Model -->
+            <div class="virtual-wristband-container" id="wristband-target" title="Click to Simulate Tap">
+              <div class="sim-wristband-strap top-strap"></div>
+              <div class="sim-wristband-dial">
+                <!-- Glowing Antenna Indicator -->
+                <div class="sim-nfc-hotspot" id="nfc-hotspot">
+                  <div class="hotspot-pulse"></div>
+                  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M6 18h8a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2z"></path>
+                    <path d="M12 9v6"></path>
+                    <path d="M9 12h6"></path>
+                  </svg>
+                  <span class="hotspot-text">TAP HERE</span>
+                </div>
+                <div class="wristband-label">MEDILINK SMART TAG</div>
+              </div>
+              <div class="sim-wristband-strap btm-strap"></div>
+            </div>
+
+            <!-- Profile Selector Dropdown -->
+            <div class="sim-selector-group">
+              <label for="sim-profile-select" class="form-label">
+                <strong>Select Demo Wristband Tag:</strong>
+              </label>
+              <select id="sim-profile-select" class="form-select">
+                <option value="ML-DEMO-001" selected>Tag #1: ML-DEMO-001 (Aarav Sharma — Blood O+, Severe Penicillin Allergy)</option>
+                <option value="ML-DEMO-002">Tag #2: ML-DEMO-002 (Priya Verma — Blood B+, No Known Allergies)</option>
+                <option value="ML-DEMO-003">Tag #3: ML-DEMO-003 (David Miller — Blood A-, Cardiac Pacemaker)</option>
+              </select>
+            </div>
+
+            <!-- Action Button -->
+            <div class="sim-actions">
+              <button type="button" class="btn btn-danger btn-lg btn-block" id="btn-simulate-tap">
+                <span class="btn-icon">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                  </svg>
+                </span>
+                <span id="sim-btn-text">Simulate NFC Tap</span>
+              </button>
+            </div>
+
+            <div class="sim-note">
+              <small>
+                <strong>Software Simulation Notice:</strong> Web browsers cannot initiate arbitrary low-level NFC polling without user authorization or Web NFC hardware support (Android Chrome only). This simulation faithfully mirrors the native smartphone OS background NFC reading experience.
+              </small>
+            </div>
+          </div>
+
+          <!-- Right: Terminal / Signal Diagnostics Console -->
+          <div class="sim-console-card">
+            <div class="console-header">
+              <div class="console-title-group">
+                <span class="console-dot red"></span>
+                <span class="console-dot yellow"></span>
+                <span class="console-dot green"></span>
+                <span class="console-title">NFC Protocol Event Log</span>
+              </div>
+              <button type="button" class="btn-console-clear" id="btn-clear-console" title="Clear log">Clear</button>
+            </div>
+
+            <div class="console-body" id="sim-console-body">
+              <div class="console-line info">[System]: Medilink Virtual NFC Subsystem v1.0.4 initialized.</div>
+              <div class="console-line info">[System]: Ready. Tap the wristband above or click 'Simulate NFC Tap' to begin.</div>
+            </div>
+
+            <!-- Step Progress Indicator -->
+            <div class="sim-steps-progress" id="sim-progress-bar">
+              <div class="progress-segment" id="prog-step-1" title="Field Detect">
+                <span class="prog-dot">1</span>
+                <span class="prog-label">RF Detect</span>
+              </div>
+              <div class="progress-segment" id="prog-step-2" title="NDEF Read">
+                <span class="prog-dot">2</span>
+                <span class="prog-label">NDEF Read</span>
+              </div>
+              <div class="progress-segment" id="prog-step-3" title="URI Resolved">
+                <span class="prog-dot">3</span>
+                <span class="prog-label">URI Parse</span>
+              </div>
+              <div class="progress-segment" id="prog-step-4" title="Profile Loaded">
+                <span class="prog-dot">4</span>
+                <span class="prog-label">Profile Ready</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ------------------------------------------------------------- -->
+    <!-- SECTION 4: DEMO EMERGENCY PROFILE                             -->
+    <!-- ------------------------------------------------------------- -->
+    <section class="section profile-section" id="profile">
+      <div class="container">
+        <!-- Section Header -->
+        <div class="section-header text-center">
+          <div class="section-kicker">LIVE RECORD VIEW</div>
+          <h2 class="section-title">Emergency Medical Profile</h2>
+          <p class="section-desc">
+            Standardized, high-contrast mobile view presented to emergency medical technicians, doctors, or first aiders.
+          </p>
+        </div>
+
+        <!-- Mandatory Fictional Data Disclaimer Banner -->
+        <div class="profile-disclaimer-banner" role="region" aria-label="Demo Disclaimer">
+          <div class="disclaimer-content">
+            <span class="disclaimer-badge">DEMO PROFILE</span>
+            <span class="disclaimer-text">
+              <strong>NOT REAL MEDICAL DATA:</strong> All clinical records, blood types, contacts, and personal names shown on this page are strictly fictional and generated exclusively for IDEATHON/Hackathon evaluation.
+            </span>
+          </div>
+        </div>
+
+        <!-- Interactive Profile Switcher Toolbar -->
+        <div class="profile-switcher-toolbar">
+          <span class="switcher-label">Switch Demo Record:</span>
+          <div class="switcher-buttons" role="tablist" aria-label="Profile Selector">
+            <button type="button" class="btn-profile-tab active" data-profile-id="ML-DEMO-001" role="tab" aria-selected="true">
+              Aarav Sharma (ML-001)
+            </button>
+            <button type="button" class="btn-profile-tab" data-profile-id="ML-DEMO-002" role="tab" aria-selected="false">
+              Priya Verma (ML-002)
+            </button>
+            <button type="button" class="btn-profile-tab" data-profile-id="ML-DEMO-003" role="tab" aria-selected="false">
+              David Miller (ML-003)
+            </button>
+          </div>
+        </div>
+
+        <!-- Main Emergency Profile Container -->
+        <article class="emergency-profile-card" id="patient-profile-card">
+          <!-- Profile Top Header Bar -->
+          <div class="profile-card-header">
+            <div class="profile-primary-info">
+              <!-- Avatar with Blood Type Overlay -->
+              <div class="patient-avatar-wrap">
+                <div class="patient-avatar-circle" id="patient-avatar-initials">AS</div>
+                <div class="avatar-verified-check" title="Cryptographically Verified NDEF Tag">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                </div>
+              </div>
+
+              <!-- Name & Metadata -->
+              <div class="patient-title-group">
+                <div class="patient-meta-top">
+                  <span class="badge-status-active">
+                    <span class="pulse-green-dot"></span> ACTIVE EMERGENCY PROFILE
+                  </span>
+                  <span class="badge-profile-id" id="patient-profile-id">ID: ML-DEMO-001</span>
+                </div>
+                <h3 class="patient-name" id="patient-name">Aarav Sharma</h3>
+                <div class="patient-submeta" id="patient-demographics">
+                  Age: 28 • Male • DOB: 14/08/1996 • New Delhi, IN
+                </div>
+              </div>
+            </div>
+
+            <!-- Big Blood Group Callout Card (Critical Priority) -->
+            <div class="blood-group-card" title="Blood Type Verification">
+              <span class="blood-group-sub">BLOOD GROUP</span>
+              <span class="blood-group-val" id="patient-blood-group">O+</span>
+              <span class="blood-rh-sub" id="patient-blood-rh">Rh Positive</span>
+            </div>
+          </div>
+
+          <!-- Critical Health Alert Grid (Top Priority for First Responders) -->
+          <div class="critical-alerts-grid">
+            <!-- Severe Allergies Box -->
+            <div class="alert-box allergy-box">
+              <div class="alert-box-header">
+                <span class="alert-box-icon text-red">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                  </svg>
+                </span>
+                <span class="alert-box-title text-red">KNOWN ALLERGIES</span>
+              </div>
+              <div class="alert-box-content" id="patient-allergies">
+                <div class="allergy-tag severe">
+                  <strong>Penicillin</strong> — High Anaphylaxis Risk
+                </div>
+              </div>
+            </div>
+
+            <!-- Chronic Conditions & Medical Notes Box -->
+            <div class="alert-box condition-box">
+              <div class="alert-box-header">
+                <span class="alert-box-icon text-orange">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                  </svg>
+                </span>
+                <span class="alert-box-title text-orange">MEDICAL CONDITIONS / NOTES</span>
+              </div>
+              <div class="alert-box-content" id="patient-medical-notes">
+                <div class="condition-item">
+                  <strong>Asthma:</strong> Uses rescue inhaler (Albuterol) in case of acute bronchial distress. Keep upright.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section: Emergency Contacts & Physician -->
+          <div class="profile-details-grid">
+            <!-- Primary Emergency Contact Card -->
+            <div class="detail-card">
+              <div class="detail-card-header">
+                <span class="detail-card-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0284C7" stroke-width="2">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                  </svg>
+                </span>
+                <h4 class="detail-card-title">PRIMARY EMERGENCY CONTACT</h4>
+              </div>
+              <div class="detail-card-body">
+                <div class="contact-info-row">
+                  <span class="contact-name" id="patient-contact-name">Demo Contact (Sunita Sharma)</span>
+                  <span class="contact-relation" id="patient-contact-relation">Relationship: Spouse</span>
+                </div>
+                <div class="contact-phone-row">
+                  <a href="tel:+919000000000" class="btn btn-call-primary" id="patient-contact-btn">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                    </svg>
+                    <span id="patient-contact-phone">+91 90000 00000</span>
+                    <span class="btn-subtext">(One-Touch Call)</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Medications & Dosage Card -->
+            <div class="detail-card">
+              <div class="detail-card-header">
+                <span class="detail-card-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0284C7" stroke-width="2">
+                    <path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"></path>
+                    <path d="m8.5 8.5 7 7"></path>
+                  </svg>
+                </span>
+                <h4 class="detail-card-title">CURRENT MEDICATIONS</h4>
+              </div>
+              <div class="detail-card-body" id="patient-medications">
+                <ul class="medication-list">
+                  <li><strong>Albuterol Inhaler (90mcg):</strong> 1-2 puffs as needed for shortness of breath.</li>
+                  <li><strong>Budesonide (200mcg):</strong> Once daily morning inhalation.</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Logistics & Clinical Details -->
+            <div class="detail-card">
+              <div class="detail-card-header">
+                <span class="detail-card-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0284C7" stroke-width="2">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                  </svg>
+                </span>
+                <h4 class="detail-card-title">HOSPITAL & INSURANCE PREFERENCE</h4>
+              </div>
+              <div class="detail-card-body">
+                <div class="meta-row">
+                  <span class="meta-label">Preferred Hospital:</span>
+                  <span class="meta-val" id="patient-hospital">City Memorial Hospital & Trauma Center</span>
+                </div>
+                <div class="meta-row">
+                  <span class="meta-label">Organ Donor:</span>
+                  <span class="meta-val" id="patient-donor">Registered Organ Donor (Yes)</span>
+                </div>
+                <div class="meta-row">
+                  <span class="meta-label">Insurance Provider:</span>
+                  <span class="meta-val" id="patient-insurance">MediShield National • Policy #ML-99824</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- First Responder Instructions -->
+            <div class="detail-card">
+              <div class="detail-card-header">
+                <span class="detail-card-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0284C7" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                    <polyline points="10 9 9 9 8 9"></polyline>
+                  </svg>
+                </span>
+                <h4 class="detail-card-title">FIRST RESPONDER ACTION PROTOCOL</h4>
+              </div>
+              <div class="detail-card-body" id="patient-instructions">
+                <p class="protocol-text">
+                  1. Maintain open airway. Position sitting upright if patient is wheezing.<br>
+                  2. DO NOT administer penicillin or beta-lactam antibiotics under any circumstance.<br>
+                  3. Immediately alert emergency contact listed above upon transit to ER.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Action Toolbar for Paramedics / Bystanders -->
+          <div class="profile-card-footer">
+            <div class="responder-actions-wrap">
+              <button type="button" class="btn btn-primary" id="btn-copy-summary">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+                <span>Copy Summary for Paramedic Report</span>
+              </button>
+
+              <button type="button" class="btn btn-secondary" id="btn-share-profile">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="18" cy="5" r="3"></circle>
+                  <circle cx="6" cy="12" r="3"></circle>
+                  <circle cx="18" cy="19" r="3"></circle>
+                  <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                  <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                </svg>
+                <span>Share Profile Link</span>
+              </button>
+
+              <a href="#" target="_blank" class="btn btn-outline" id="btn-direct-link">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                  <polyline points="15 3 21 3 21 9"></polyline>
+                  <line x1="10" y1="14" x2="21" y2="3"></line>
+                </svg>
+                <span>Open Direct URL Parameter</span>
+              </a>
+            </div>
+
+            <div class="profile-timestamp">
+              Profile record fetched via HTTPS • Cryptographically signed URI verified • Hackathon Demo Session
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ------------------------------------------------------------- -->
+    <!-- SECTION 5: TECHNICAL SECTION                                  -->
+    <!-- ------------------------------------------------------------- -->
+    <section class="section tech-section" id="technology">
+      <div class="container">
+        <!-- Section Header -->
+        <div class="section-header text-center">
+          <div class="section-kicker">ENGINEERING STACK</div>
+          <h2 class="section-title">Technology Behind Medilink</h2>
+          <p class="section-desc">
+            A hybrid hardware-software architecture bridging physical NFC wearables with modern, scalable cloud infrastructure.
+          </p>
+        </div>
+
+        <!-- 6 Tech Cards Grid -->
+        <div class="tech-grid">
+          <!-- Card 1: NFC -->
+          <div class="tech-card">
+            <div class="tech-card-badge implemented">SIMULATED / HARDWARE COMPATIBLE</div>
+            <div class="tech-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#0284C7" stroke-width="2">
+                <path d="M6 18h8a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2z"></path>
+                <path d="M12 9v6"></path>
+                <path d="M9 12h6"></path>
+              </svg>
+            </div>
+            <h3 class="tech-name">NFC (Near Field Communication)</h3>
+            <p class="tech-desc">
+              13.56 MHz high-frequency RFID standard (ISO/IEC 14443 Type A). Operates over inductive magnetic coupling within 0–4 cm, eliminating batteries on the wearable tag.
+            </p>
+            <div class="tech-meta">
+              <span>Chipset: NXP NTAG213 / NTAG215</span>
+              <span>Power: 0 mW (Passive)</span>
+            </div>
+          </div>
+
+          <!-- Card 2: NDEF -->
+          <div class="tech-card">
+            <div class="tech-card-badge implemented">IMPLEMENTED IN PROTOTYPE</div>
+            <div class="tech-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#0284C7" stroke-width="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+              </svg>
+            </div>
+            <h3 class="tech-name">NDEF (NFC Data Exchange Format)</h3>
+            <p class="tech-desc">
+              A standardized binary data payload format defined by the NFC Forum. Encodes a single Well-Known URI Record Type Definition (RTD) pointing directly to the Medilink secure domain.
+            </p>
+            <div class="tech-meta">
+              <span>Payload: URI RTD prefix (0x04)</span>
+              <span>Memory Footprint: &lt; 144 Bytes</span>
+            </div>
+          </div>
+
+          <!-- Card 3: HTTPS -->
+          <div class="tech-card">
+            <div class="tech-card-badge implemented">SUPPORTED / GITHUB PAGES READY</div>
+            <div class="tech-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#0284C7" stroke-width="2">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+            </div>
+            <h3 class="tech-name">HTTPS & Transport Encryption</h3>
+            <p class="tech-desc">
+              Enforces TLS 1.3 encryption across all client-server communications. Guarantees that URL parameters and profile transmissions cannot be intercepted or modified via man-in-the-middle attacks.
+            </p>
+            <div class="tech-meta">
+              <span>Protocol: TLS 1.3 / HSTS</span>
+              <span>Port: 443 (Encrypted)</span>
+            </div>
+          </div>
+
+          <!-- Card 4: Web Application -->
+          <div class="tech-card">
+            <div class="tech-card-badge implemented">IMPLEMENTED & FUNCTIONAL</div>
+            <div class="tech-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#0284C7" stroke-width="2">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                <line x1="8" y1="21" x2="16" y2="21"></line>
+                <line x1="12" y1="17" x2="12" y2="21"></line>
+              </svg>
+            </div>
+            <h3 class="tech-name">Web Application (Frontend)</h3>
+            <p class="tech-desc">
+              Zero-dependency, high-performance HTML5, CSS3, and Vanilla JavaScript client. Operates natively in mobile Safari, Chrome, and Edge without requiring first responders to install an application.
+            </p>
+            <div class="tech-meta">
+              <span>Stack: Vanilla JS / CSS Grid</span>
+              <span>Load Speed: &lt; 200 ms</span>
+            </div>
+          </div>
+
+          <!-- Card 5: Backend / API -->
+          <div class="tech-card future">
+            <div class="tech-card-badge roadmap">FUTURE PRODUCTION ROADMAP</div>
+            <div class="tech-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2">
+                <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+                <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+                <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+              </svg>
+            </div>
+            <h3 class="tech-name">Backend / Microservices API</h3>
+            <p class="tech-desc">
+              In production, a Node/Go microservice layer will handle token verification, rate-limiting, responder geostamp authorization, and real-time SMS dispatch to registered emergency contacts.
+            </p>
+            <div class="tech-meta">
+              <span>Architecture: Cloud Run / FastAPI</span>
+              <span>Status: Planned Production Tier</span>
+            </div>
+          </div>
+
+          <!-- Card 6: Encrypted Database -->
+          <div class="tech-card future">
+            <div class="tech-card-badge roadmap">FUTURE PRODUCTION ROADMAP</div>
+            <div class="tech-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              </svg>
+            </div>
+            <h3 class="tech-name">HIPAA-Compliant Database</h3>
+            <p class="tech-desc">
+              Decentralized or encrypted SQL/NoSQL datastore with AES-256 field-level encryption for sensitive EHR records. Distinguishes emergency baseline info from restricted medical history.
+            </p>
+            <div class="tech-meta">
+              <span>Encryption: AES-256 at Rest</span>
+              <span>Status: Planned Production Tier</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ------------------------------------------------------------- -->
+    <!-- SECTION 6: PRIVACY / SECURITY SECTION                         -->
+    <!-- ------------------------------------------------------------- -->
+    <section class="section security-section" id="security">
+      <div class="container">
+        <!-- Section Header -->
+        <div class="section-header text-center">
+          <div class="section-kicker">GOVERNANCE & TRUST</div>
+          <h2 class="section-title">Privacy, Security & Compliance Roadmap</h2>
+          <p class="section-desc">
+            Emergency medicine demands a rigorous balance between instant accessibility for first responders and ironclad patient privacy.
+          </p>
+        </div>
+
+        <!-- Prototype Notice Box -->
+        <div class="prototype-notice-box">
+          <div class="notice-badge">PROTOTYPE NOTICE</div>
+          <h3 class="notice-title">Demonstration Environment Notice</h3>
+          <p class="notice-desc">
+            This prototype demonstrates the NFC-to-web access workflow using fictional data. It is constructed for hackathon judging and educational purposes. In accordance with clinical informatics principles, Medilink does not claim that this client-side prototype is production-secure without the backend controls detailed below.
+          </p>
+        </div>
+
+        <!-- 8 Production Security Requirements -->
+        <div class="security-reqs-grid">
+          <div class="security-item">
+            <div class="sec-item-number">01</div>
+            <h4>HTTPS & Strict TLS</h4>
+            <p>Mandatory TLS 1.3 with Certificate Transparency and HSTS prevents spoofing and traffic snooping.</p>
+          </div>
+
+          <div class="security-item">
+            <div class="sec-item-number">02</div>
+            <h4>Authentication & Authorization</h4>
+            <p>Tiered access: Public emergency view (blood type, allergies) vs. authenticated view for certified paramedics.</p>
+          </div>
+
+          <div class="security-item">
+            <div class="sec-item-number">03</div>
+            <h4>Granular Access Control</h4>
+            <p>Patients control which data fields are publicly visible versus locked behind an emergency contact PIN.</p>
+          </div>
+
+          <div class="security-item">
+            <div class="sec-item-number">04</div>
+            <h4>Data Minimization</h4>
+            <p>Only lifesaving vitals are loaded initially. Non-urgent clinical history is omitted to protect patient privacy.</p>
+          </div>
+
+          <div class="security-item">
+            <div class="sec-item-number">05</div>
+            <h4>End-to-End Encryption</h4>
+            <p>Field-level AES-256 encryption protects personal identifiable information (PII) at rest and during transit.</p>
+          </div>
+
+          <div class="security-item">
+            <div class="sec-item-number">06</div>
+            <h4>Real-Time Audit Logging</h4>
+            <p>Every profile scan records a timestamp and general IP/region, immediately sending an SMS alert to emergency contacts.</p>
+          </div>
+
+          <div class="security-item">
+            <div class="sec-item-number">07</div>
+            <h4>Instant Profile Revocation</h4>
+            <p>If a wristband is lost or stolen, the patient can disable the profile ID from their dashboard in one click.</p>
+          </div>
+
+          <div class="security-item">
+            <div class="sec-item-number">08</div>
+            <h4>Healthcare Regulatory Review</h4>
+            <p>Formal alignment with HIPAA (US), GDPR (EU), and DISHA / Ayushman Bharat Digital Mission standards.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ------------------------------------------------------------- -->
+    <!-- SECTION 7: HACKATHON SECTION ("WHY MEDILINK?")                 -->
+    <!-- ------------------------------------------------------------- -->
+    <section class="section why-section" id="why-medilink">
+      <div class="container">
+        <!-- Section Header -->
+        <div class="section-header text-center">
+          <div class="section-kicker">VALUE PROPOSITION</div>
+          <h2 class="section-title">Why Medilink? The Engineering Advantage</h2>
+          <p class="section-desc">
+            Why NFC hardware combined with universal web standards outperforms proprietary apps and engraved medical ID tags.
+          </p>
+        </div>
+
+        <!-- 6 Hackathon Advantage Cards -->
+        <div class="why-grid">
+          <!-- Card 1 -->
+          <div class="why-card">
+            <div class="why-icon">⚡</div>
+            <h3 class="why-title">Fast, Frictionless Access</h3>
+            <p class="why-desc">
+              Paramedics have zero time to unlock a patient’s phone or search wallets. A 2-second tap delivers critical blood group and allergy alerts during the golden hour.
+            </p>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="why-card">
+            <div class="why-icon">🔋</div>
+            <h3 class="why-title">Zero Battery Required</h3>
+            <p class="why-desc">
+              Smartwatches and fitness bands die when uncharged. Passive NFC wristbands rely entirely on inductive power from the scanning phone, remaining operational for decades.
+            </p>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="why-card">
+            <div class="why-icon">📱</div>
+            <h3 class="why-title">No Dedicated App Needed</h3>
+            <p class="why-desc">
+              Proprietary medical apps require responders to download and register before viewing records. Medilink leverages the universal native web browser already installed on every phone.
+            </p>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="why-card">
+            <div class="why-icon">🔄</div>
+            <h3 class="why-title">Easy to Update Profiles</h3>
+            <p class="why-desc">
+              Engraved metal bracelets become dangerously obsolete when medication doses change. With Medilink, the physical wristband link stays constant while records update in the cloud.
+            </p>
+          </div>
+
+          <!-- Card 5 -->
+          <div class="why-card">
+            <div class="why-icon">📈</div>
+            <h3 class="why-title">Scalable & Low Unit Cost</h3>
+            <p class="why-desc">
+              Passive silicone NFC wristbands cost between $0.15 to $0.40 at scale, allowing hospitals, universities, and marathon events to distribute them en masse to vulnerable populations.
+            </p>
+          </div>
+
+          <!-- Card 6 -->
+          <div class="why-card">
+            <div class="why-icon">🏁</div>
+            <h3 class="why-title">Dual QR Fallback Option</h3>
+            <p class="why-desc">
+              In addition to the embedded NFC chip, physical wristbands can feature a laser-etched high-density QR code targeting the exact same HTTPS URL for older phones without NFC.
+            </p>
+          </div>
+        </div>
+
+        <!-- Formula Highlight Banner -->
+        <div class="formula-banner">
+          <div class="formula-text">
+            <span class="formula-lead">The Winning Formula:</span>
+            <span class="formula-math">NFC + Web = Simple Emergency Access</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================================================================= -->
+  <!-- TOAST NOTIFICATION POPUP (Used for clipboard & feedback)          -->
+  <!-- ================================================================= -->
+  <div id="toast" class="toast-popup" role="status" aria-live="polite">
+    <div class="toast-inner">
+      <span class="toast-icon">✓</span>
+      <span class="toast-msg" id="toast-msg">Notification message</span>
+    </div>
+  </div>
+
+  <!-- ================================================================= -->
+  <!-- FOOTER                                                            -->
+  <!-- ================================================================= -->
+  <footer class="site-footer">
+    <div class="container footer-container">
+      <!-- Footer Top Column 1: Brand -->
+      <div class="footer-col footer-col-brand">
+        <div class="footer-logo">
+          <span class="footer-logo-text">MEDILINK</span>
+        </div>
+        <p class="footer-tagline">
+          Emergency Medical Access, One Tap Away.
+        </p>
+        <div class="footer-badge-demo">
+          <strong>Prototype developed for IDEATHON/Hackathon demonstration.</strong>
+        </div>
+      </div>
+
+      <!-- Footer Column 2: Quick Links -->
+      <div class="footer-col">
+        <h4 class="footer-col-title">Navigation</h4>
+        <ul class="footer-links">
+          <li><a href="#hero">Home</a></li>
+          <li><a href="#how-it-works">How It Works</a></li>
+          <li><a href="#simulation">NFC Simulation</a></li>
+          <li><a href="#profile">Emergency Profile</a></li>
+          <li><a href="#technology">Technology Stack</a></li>
+        </ul>
+      </div>
+
+      <!-- Footer Column 3: Prototype Profiles -->
+      <div class="footer-col">
+        <h4 class="footer-col-title">Demo Profiles</h4>
+        <ul class="footer-links">
+          <li><a href="./index.html?profile=ML-DEMO-001">Aarav Sharma (ML-001)</a></li>
+          <li><a href="./index.html?profile=ML-DEMO-002">Priya Verma (ML-002)</a></li>
+          <li><a href="./index.html?profile=ML-DEMO-003">David Miller (ML-003)</a></li>
+        </ul>
+      </div>
+
+      <!-- Footer Column 4: GitHub & Repo Details -->
+      <div class="footer-col">
+        <h4 class="footer-col-title">Project Code & Source</h4>
+        <p class="footer-repo-desc">
+          Built with pure HTML5, CSS3, and Vanilla JavaScript. Ready for instant GitHub Pages deployment.
+        </p>
+        <div class="footer-github-link">
+          <p class="github-placeholder-text">
+            <strong>GitHub: [ADD-GITHUB-URL-HERE]</strong>
+          </p>
+          <a href="https://github.com/[ADD-GITHUB-URL-HERE]" target="_blank" rel="noopener noreferrer" class="github-link-tag">
+            https://github.com/[ADD-GITHUB-URL-HERE]
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer Bottom Copyright & Medical Disclaimer -->
+    <div class="footer-bottom">
+      <div class="container footer-bottom-inner">
+        <p class="fictional-notice">
+          <strong>LEGAL & MEDICAL NOTICE:</strong> Medilink is an academic engineering demonstration prototype. All patient records, phone numbers, and diagnostic values are fictional. In a real medical emergency, immediately dial local emergency services (e.g., 911 / 112 / 108).
+        </p>
+        <p class="copyright-text">
+          &copy; 2026 Medilink Prototype • College Engineering Hackathon Edition • Zero Server Dependencies
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Relative JavaScript link for static GitHub Pages compatibility -->
+  <script src="./script.js"></script>
+</body>
+</html>
