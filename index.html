@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Medilink — NFC-Enabled Emergency Medical Profile System. Instant lifesaving medical flash info for bystanders and secure full medical records for authorized doctors and paramedics.">
+  <meta name="theme-color" content="#ffffff">
+  <title>MEDILINK — Emergency Medical Access, One Tap Away</title>
+
+  <!-- OpenGraph Meta Tags -->
+  <meta property="og:title" content="MEDILINK — Emergency Medical Access">
+  <meta property="og:description" content="Instant access to verified emergency medical information via NFC wearable.">
+  <meta property="og:type" content="website">
+
+  <!-- Relative CSS link for static deployment -->
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+  <!-- ================================================================= -->
+  <!-- TOP EMERGENCY DIRECT ACCESS ALERT (Triggered via NFC tag link)    -->
+  <!-- ================================================================= -->
+  <aside id="direct-profile-banner" class="emergency-alert-banner hidden" role="alert" aria-live="assertive">
+    <div class="banner-inner container">
+      <div class="banner-content">
+        <span class="banner-icon-pulse">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+            <line x1="12" y1="9" x2="12" y2="13"></line>
+            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+          </svg>
+        </span>
+        <div class="banner-text">
+          <strong>EMERGENCY NFC TAG SCANNED</strong>
+          <span>Displaying verified emergency flash information for first responders.</span>
+        </div>
+      </div>
+      <div class="banner-actions">
+        <button type="button" id="btn-banner-exit" class="btn btn-sm btn-outline-light">Home View</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ================================================================= -->
+  <!-- GLOBAL HEADER & NAVIGATION                                        -->
+  <!-- ================================================================= -->
+  <header class="site-header" id="site-header">
+    <div class="header-container container">
+      <!-- Brand Logo -->
+      <a href="./index.html" class="brand-logo" aria-label="Medilink Home">
+        <div class="logo-symbol" aria-hidden="true">
+          <svg width="36" height="36" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="40" height="40" rx="10" fill="#0284C7"/>
+            <path d="M16 11H24V16H29V24H24V29H16V24H11V16H16V11Z" fill="#FFFFFF"/>
+            <path d="M18 13H22V18H27V22H22V27H18V22H13V18H18V13Z" fill="#DC2626"/>
+            <!-- NFC Signal Indicator -->
+            <path d="M26 12C28.8 14.8 28.8 19.2 26 22" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round"/>
+            <path d="M29 9C33.2 13.2 33.2 19.8 29 24" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" opacity="0.8"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-name">MEDILINK</span>
+          <span class="brand-tagline">Emergency Medical Access</span>
+        </div>
+      </a>
+
+      <!-- Primary Navigation Links -->
+      <nav class="nav-menu" id="nav-menu" aria-label="Primary Navigation">
+        <ul class="nav-list">
+          <li><a href="#hero" class="nav-link active">Home</a></li>
+          <li><a href="#scanner" class="nav-link">Scan Wristband</a></li>
+          <li><a href="#profile" class="nav-link">Emergency Profile</a></li>
+          <li><a href="#doctor-modal" class="nav-link nav-btn-link" id="nav-btn-doctor-login">Doctor / Paramedic Access</a></li>
+          <li><a href="#patient-modal" class="nav-link nav-btn-link" id="nav-btn-patient-portal">Patient Portal</a></li>
+        </ul>
+      </nav>
+
+      <!-- Header Action Buttons -->
+      <div class="header-cta-group">
+        <button type="button" class="btn btn-outline btn-sm" id="btn-header-doctor">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+          <span>Doctor Login</span>
+        </button>
+
+        <button type="button" class="btn btn-primary btn-sm" id="btn-header-patient">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+          <span>Patient Sign In</span>
+        </button>
+
+        <!-- Mobile Menu Toggle Button -->
+        <button type="button" class="mobile-toggle" id="mobile-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle navigation menu">
+          <span class="hamburger-bar"></span>
+          <span class="hamburger-bar"></span>
+          <span class="hamburger-bar"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================================================================= -->
+  <!-- MAIN CONTENT AREA                                                 -->
+  <!-- ================================================================= -->
+  <main id="main-content">
+
+    <!-- ------------------------------------------------------------- -->
+    <!-- SECTION 1: HERO                                               -->
+    <!-- ------------------------------------------------------------- -->
+    <section class="hero-section" id="hero">
+      <div class="container hero-container">
+        <!-- Hero Text -->
+        <div class="hero-text-content">
+          <div class="badge-pill">
+            <span class="badge-dot pulse"></span>
+            <span class="badge-label">NFC-ENABLED EMERGENCY SYSTEM</span>
+          </div>
+
+          <h1 class="hero-headline">
+            Critical Medical Information.<br>
+            <span class="highlight-blue">One Tap Away.</span>
+          </h1>
+
+          <p class="hero-subhead">
+            Medilink instantly displays life-saving medical flash data to bystanders and first responders who tap an NFC wristband, while giving certified doctors and paramedics secure access to full medical history.
+          </p>
+
+          <div class="hero-actions">
+            <a href="#profile" class="btn btn-danger btn-lg" id="btn-hero-emergency-flash">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+              </svg>
+              <span>View Emergency Flash Info</span>
+            </a>
+
+            <a href="#scanner" class="btn btn-secondary btn-lg">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path>
+                <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path>
+              </svg>
+              <span>Tap NFC Wristband</span>
+            </a>
+          </div>
+
+          <!-- Feature Bullets -->
+          <div class="hero-feature-pills">
+            <div class="feature-pill-item">
+              <span class="pill-icon">🚨</span>
+              <span><strong>Flash Display:</strong> Blood, Allergies &amp; 1-Tap Calling for Bystanders</span>
+            </div>
+            <div class="feature-pill-item">
+              <span class="pill-icon">🩺</span>
+              <span><strong>Doctor Access:</strong> Secure Full Medical History &amp; Lab Records</span>
+            </div>
+            <div class="feature-pill-item">
+              <span class="pill-icon">👤</span>
+              <span><strong>Patient Account:</strong> Register &amp; Upload Personal Health Records</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hero Visual: NFC Interaction Card -->
+        <div class="hero-visual-content">
+          <div class="nfc-interaction-card">
+            <div class="device-mockup-wrapper">
+              <!-- Smartphone Graphic -->
+              <div class="phone-mockup">
+                <div class="phone-speaker"></div>
+                <div class="phone-screen">
+                  <div class="phone-screen-header">
+                    <span class="phone-time">13:10</span>
+                    <span class="phone-status-icons">NFC 📶 100%</span>
+                  </div>
+                  <div class="phone-screen-body">
+                    <!-- Flash Emergency Banner On Phone Screen -->
+                    <div class="phone-flash-banner">
+                      <span class="phone-flash-dot"></span>
+                      <span>EMERGENCY FLASH INFO</span>
+                    </div>
+
+                    <div class="phone-screen-card">
+                      <div class="screen-row-name" id="preview-phone-name">Aarav Sharma</div>
+                      <div class="screen-blood-badge" id="preview-phone-blood">O+ POSITIVE</div>
+                      <div class="screen-item-alert">
+                        <span class="screen-alert-label">Severe Allergy:</span>
+                        <span class="screen-alert-val" id="preview-phone-allergy">Penicillin (Anaphylaxis)</span>
+                      </div>
+                      <div class="screen-item-alert">
+                        <span class="screen-alert-label">Condition:</span>
+                        <span class="screen-alert-val" id="preview-phone-condition">Asthma (Inhaler)</span>
+                      </div>
+                      <div class="phone-call-btn">
+                        📞 Call Contact (+91 90000 00000)
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Animated RF Waves -->
+              <div class="rf-waves" aria-hidden="true">
+                <span class="wave wave-1"></span>
+                <span class="wave wave-2"></span>
+                <span class="wave wave-3"></span>
+                <div class="rf-label">NFC TAP</div>
+              </div>
+
+              <!-- Wristband Graphic -->
+              <div class="wristband-mockup">
+                <div class="band-strap band-strap-top"></div>
+                <div class="band-module">
+                  <div class="band-chip-badge">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.2">
+                      <path d="M2 12h20"></path>
+                      <path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-6"></path>
+                      <path d="M12 2a4 4 0 0 0-4 4v6h8V6a4 4 0 0 0-4-4z"></path>
+                    </svg>
+                  </div>
+                  <span class="band-brand">MEDILINK</span>
+                  <span class="band-sub">NFC WRISTBAND</span>
+                </div>
+                <div class="band-strap band-strap-bottom"></div>
+              </div>
+            </div>
+
+            <div class="visual-caption">
+              <p><strong>NFC Wristband:</strong> Hold any smartphone close to read the instant flash message</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ------------------------------------------------------------- -->
+    <!-- SECTION 2: NFC WRISTBAND SCANNER INTERACTION                  -->
+    <!-- ------------------------------------------------------------- -->
+    <section class="section scanner-section" id="scanner">
+      <div class="container">
+        <div class="section-header text-center">
+          <div class="section-kicker">WRISTBAND INTERACTION</div>
+          <h2 class="section-title">Tap Wristband with Smartphone</h2>
+          <p class="section-desc">
+            Simulate or test tapping the NFC wristband to trigger the immediate emergency flash display message on your smartphone screen.
+          </p>
+        </div>
+
+        <div class="scanner-card-box">
+          <div class="scanner-interactive-layout">
+            <!-- Left: Tap Target Area -->
+            <div class="scanner-target-col">
+              <div class="virtual-wristband-target" id="wristband-target" title="Tap Wristband to Read Record">
+                <div class="target-band-strap top-strap"></div>
+                <div class="target-band-dial">
+                  <div class="dial-hotspot">
+                    <div class="hotspot-pulse-ring"></div>
+                    <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M6 18h8a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2z"></path>
+                      <path d="M12 9v6"></path>
+                      <path d="M9 12h6"></path>
+                    </svg>
+                    <span class="hotspot-text">TAP WRISTBAND</span>
+                  </div>
+                  <span class="band-model-label">MEDILINK SMART BAND</span>
+                </div>
+                <div class="target-band-strap btm-strap"></div>
+              </div>
+
+              <div class="scanner-action-btn-wrap">
+                <button type="button" class="btn btn-danger btn-lg btn-block" id="btn-simulate-tap">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path>
+                    <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path>
+                  </svg>
+                  <span id="sim-btn-text">Tap to Read NFC Band</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Right: NFC Reader Activity Status -->
+            <div class="scanner-status-col">
+              <div class="status-box-header">
+                <span class="status-indicator-dot online"></span>
+                <span class="status-title">NFC Receiver Status:</span>
+                <span class="status-value" id="sim-hw-status">READY FOR TAP</span>
+              </div>
+
+              <div class="scanner-console-log" id="sim-console-body">
+                <div class="log-row info">[System]: Medilink 13.56 MHz NFC receiver online.</div>
+                <div class="log-row info">[System]: Bring smartphone within 3 cm of wristband to read emergency flash info.</div>
+              </div>
+
+              <div class="scanner-steps-progress">
+                <div class="progress-step" id="prog-step-1">
+                  <span class="step-circle">1</span>
+                  <span class="step-label">NFC Detected</span>
+                </div>
+                <div class="progress-step" id="prog-step-2">
+                  <span class="step-circle">2</span>
+                  <span class="step-label">Reading Tag</span>
+                </div>
+                <div class="progress-step" id="prog-step-3">
+                  <span class="step-circle">3</span>
+                  <span class="step-label">URI Parsed</span>
+                </div>
+                <div class="progress-step" id="prog-step-4">
+                  <span class="step-circle">4</span>
+                  <span class="step-label">Flash Ready</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ------------------------------------------------------------- -->
+    <!-- SECTION 3: EMERGENCY MEDICAL PROFILE (FLASH DISPLAY MESSAGE)  -->
+    <!-- ------------------------------------------------------------- -->
+    <section class="section profile-section" id="profile">
+      <div class="container">
+        <!-- Section Header -->
+        <div class="section-header text-center">
+          <div class="section-kicker">INSTANT LIFE-SAVING ACCESS</div>
+          <h2 class="section-title">Emergency Medical Flash Display</h2>
+          <p class="section-desc">
+            High-priority vital medical information displayed immediately upon tapping the NFC wristband. Zero login required for first-aid intervention.
+          </p>
+        </div>
+
+        <!-- MAIN FLASH EMERGENCY CARD (FOR INJURED OR UNCONSCIOUS PERSON) -->
+        <article class="flash-emergency-card" id="patient-profile-card">
+          <!-- FLASH URGENT BANNER -->
+          <div class="flash-card-banner">
+            <div class="flash-banner-title">
+              <span class="flash-siren-icon">🚨</span>
+              <span>EMERGENCY MEDICAL FLASH INFORMATION</span>
+            </div>
+            <div class="flash-banner-sub">
+              FOR FIRST RESPONDERS, PARAMEDICS &amp; BYSTANDERS
+            </div>
+          </div>
+
+          <!-- PRIMARY VITALS & BLOOD GROUP HEADER -->
+          <div class="flash-card-top">
+            <div class="patient-main-identity">
+              <div class="patient-avatar-badge" id="patient-avatar-initials">AS</div>
+              <div class="patient-name-block">
+                <div class="patient-badge-row">
+                  <span class="status-verified-pill">
+                    <span class="dot-green"></span> ACTIVE EMERGENCY PROFILE
+                  </span>
+                  <span class="badge-profile-code" id="patient-profile-id">ID: ML-70821</span>
+                </div>
+                <h3 class="patient-full-name" id="patient-name">Aarav Sharma</h3>
+                <div class="patient-demographics-text" id="patient-demographics">
+                  Age: 28 • Male • DOB: 14/08/1996 • New Delhi, IN
+                </div>
+              </div>
+            </div>
+
+            <!-- Big High-Visibility Blood Group Callout Card -->
+            <div class="flash-blood-card">
+              <span class="blood-card-label">BLOOD GROUP</span>
+              <span class="blood-card-value" id="patient-blood-group">O+</span>
+              <span class="blood-card-sub" id="patient-blood-rh">Rh Positive</span>
+            </div>
+          </div>
+
+          <!-- CRITICAL HEALTH ALERTS: SEVERE ALLERGIES & CHRONIC CONDITIONS -->
+          <div class="flash-critical-alerts-grid">
+            <!-- Severe Allergy Box -->
+            <div class="urgent-alert-box allergy-highlight">
+              <div class="alert-box-header">
+                <span class="alert-icon-svg text-red">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                  </svg>
+                </span>
+                <span class="alert-header-text text-red">CRITICAL ALLERGY ALERT</span>
+              </div>
+              <div class="alert-box-body" id="patient-allergies">
+                <div class="allergy-tag severe">
+                  <strong>Penicillin</strong> — High Anaphylaxis Risk. Beta-lactam antibiotics strictly contraindicated.
+                </div>
+              </div>
+            </div>
+
+            <!-- Urgent Medical Conditions Box -->
+            <div class="urgent-alert-box condition-highlight">
+              <div class="alert-box-header">
+                <span class="alert-icon-svg text-orange">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                  </svg>
+                </span>
+                <span class="alert-header-text text-orange">CRITICAL MEDICAL CONDITION</span>
+              </div>
+              <div class="alert-box-body" id="patient-medical-notes">
+                <div class="condition-item">
+                  <strong>Severe Asthma:</strong> Uses rescue inhaler (Albuterol) for acute bronchial distress. Patient carries rescue inhaler in pocket/backpack. Keep patient in upright sitting posture.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- PRIMARY EMERGENCY CONTACT & IMMEDIATE ACTION BAR -->
+          <div class="flash-contact-action-bar">
+            <div class="contact-info-col">
+              <span class="contact-col-label">PRIMARY EMERGENCY CONTACT:</span>
+              <div class="contact-col-name" id="patient-contact-name">Sunita Sharma (Spouse)</div>
+            </div>
+            <div class="contact-button-col">
+              <a href="tel:+919000000000" class="btn btn-call-large" id="patient-contact-btn">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                </svg>
+                <div class="call-btn-text">
+                  <span class="call-phone-number" id="patient-contact-phone">+91 90000 00000</span>
+                  <span class="call-phone-sub">Tap to Call Immediate Family</span>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <!-- IMMEDIATE FIRST-AID & RESCUE PROTOCOL -->
+          <div class="flash-details-grid">
+            <div class="flash-detail-card">
+              <h4 class="detail-card-title">🚨 IMMEDIATE FIRST RESPONDER PROTOCOL</h4>
+              <div class="protocol-content" id="patient-instructions">
+                <p>
+                  1. Maintain open airway. Position sitting upright if patient is wheezing.<br>
+                  2. DO NOT administer penicillin or related cephalosporin antibiotics under any circumstance.<br>
+                  3. In acute respiratory distress: locate Albuterol rescue inhaler in patient's bag/pocket and assist administration.<br>
+                  4. Immediately contact primary emergency contact above upon dispatch to trauma center.
+                </p>
+              </div>
+            </div>
+
+            <div class="flash-detail-card">
+              <h4 class="detail-card-title">🏥 HOSPITAL &amp; LOGISTICS PREFERENCES</h4>
+              <div class="meta-rows-list">
+                <div class="meta-data-row">
+                  <span class="label">Preferred Hospital:</span>
+                  <span class="value" id="patient-hospital">City Memorial Hospital &amp; Trauma Center</span>
+                </div>
+                <div class="meta-data-row">
+                  <span class="label">Organ Donor:</span>
+                  <span class="value text-green" id="patient-donor">Registered Organ Donor (Yes)</span>
+                </div>
+                <div class="meta-data-row">
+                  <span class="label">Insurance Provider:</span>
+                  <span class="value" id="patient-insurance">MediShield National • Policy #ML-99824</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- DOCTOR / PARAMEDIC ACCESS BANNER (UNLOCK FULL CLINICAL HISTORY) -->
+          <div class="doctor-access-banner-card">
+            <div class="doctor-banner-info">
+              <div class="doctor-banner-icon">🩺</div>
+              <div class="doctor-banner-text">
+                <strong>Are you a Certified Doctor or Paramedic?</strong>
+                <p>Access the patient's full medical history, past surgeries, prescription details, and lab diagnostic reports.</p>
+              </div>
+            </div>
+            <div class="doctor-banner-actions">
+              <button type="button" class="btn btn-primary btn-md" id="btn-open-doctor-portal">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+                <span>Unlock Full Medical History</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- ATTACHED OFFICIAL PROFILE URL SECTION (AT BOTTOM OF EMERGENCY CARD) -->
+          <div class="profile-attached-url-section" id="profile-url-section">
+            <div class="url-card-inner">
+              <div class="url-card-text">
+                <div class="url-badge-label">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                  </svg>
+                  <span>OFFICIAL EMERGENCY PROFILE URL</span>
+                </div>
+                <p class="url-card-sub">
+                  This permanent web link is programmed into the patient's physical Medilink NFC wristband:
+                </p>
+                <div class="url-display-box">
+                  <code class="url-code-text" id="display-profile-url">loading profile address...</code>
+                </div>
+              </div>
+
+              <div class="url-card-actions">
+                <button type="button" class="btn btn-secondary btn-sm" id="btn-copy-profile-url">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                  </svg>
+                  <span>Copy URL</span>
+                </button>
+
+                <a href="#" target="_blank" class="btn btn-outline btn-sm" id="btn-direct-link">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                    <polyline points="15 3 21 3 21 9"></polyline>
+                    <line x1="10" y1="14" x2="21" y2="3"></line>
+                  </svg>
+                  <span>Open Direct Link</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================================================================= -->
+  <!-- MODAL 1: DOCTOR / PARAMEDIC FULL MEDICAL HISTORY ACCESS           -->
+  <!-- ================================================================= -->
+  <div class="modal-overlay hidden" id="doctor-modal" role="dialog" aria-modal="true" aria-labelledby="doctor-modal-title">
+    <div class="modal-card doctor-modal-card">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <span class="modal-icon">🩺</span>
+          <h3 class="modal-title" id="doctor-modal-title">Doctor &amp; Paramedic Portal</h3>
+        </div>
+        <button type="button" class="modal-close-btn" id="btn-close-doctor-modal" aria-label="Close Doctor Portal">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- DOCTOR LOGIN STATE (BEFORE AUTHENTICATION) -->
+        <div id="doctor-login-view" class="doctor-auth-view">
+          <div class="auth-notice-box">
+            <span class="notice-icon">🔒</span>
+            <div class="notice-text">
+              <strong>Authorized Clinical Personnel Only</strong>
+              <p>In accordance with healthcare privacy laws, access to full medical history requires credential verification.</p>
+            </div>
+          </div>
+
+          <form id="form-doctor-login" class="clinical-auth-form">
+            <div class="form-group">
+              <label for="doctor-license-id" class="form-label">Doctor / Paramedic License ID:</label>
+              <input type="text" id="doctor-license-id" class="form-input" placeholder="e.g. MED-9942 or EMT-881" required value="MED-9942">
+            </div>
+
+            <div class="form-group">
+              <label for="doctor-pin" class="form-label">Clinical Security PIN:</label>
+              <input type="password" id="doctor-pin" class="form-input" placeholder="Enter 4-digit PIN" required value="1234">
+            </div>
+
+            <div class="form-quick-credentials">
+              <span class="quick-cred-label">Quick Access Test Credentials:</span>
+              <button type="button" class="btn-text-link" id="btn-fill-doctor-creds">Use Dr. V. Patel (License: MED-9942 / PIN: 1234)</button>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary btn-lg btn-block" id="btn-submit-doctor-login">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+                <span>Verify &amp; Unlock Full Medical History</span>
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- FULL MEDICAL HISTORY UNLOCKED VIEW (AFTER AUTHENTICATION) -->
+        <div id="doctor-unlocked-view" class="doctor-unlocked-view hidden">
+          <div class="doctor-session-banner">
+            <div class="doctor-session-badge">
+              <span class="dot-green"></span>
+              <span>AUTHENTICATED CLINICAL SESSION: Dr. V. Patel (License #MED-9942)</span>
+            </div>
+            <button type="button" class="btn btn-outline btn-sm" id="btn-doctor-logout">Lock &amp; Sign Out</button>
+          </div>
+
+          <div class="clinical-history-container">
+            <!-- Section 1: Past Medical & Surgical History -->
+            <div class="clinical-section-card">
+              <h4 class="clinical-section-title">1. Past Medical Diagnoses &amp; Surgical History</h4>
+              <div class="clinical-content" id="full-history-surgeries">
+                <ul class="clinical-record-list">
+                  <li><strong>Appendectomy (2018):</strong> Laparoscopic removal at City Memorial Hospital. No post-op complications.</li>
+                  <li><strong>Childhood Asthma (Diagnosed 2006):</strong> Moderate persistent. Triggered by cold air and pollen allergens.</li>
+                  <li><strong>Mild Concussion (2021):</strong> Sports injury. Brain CT normal. Full cognitive recovery.</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Section 2: Complete Prescriptions & Dosage -->
+            <div class="clinical-section-card">
+              <h4 class="clinical-section-title">2. Complete Prescription Schedule &amp; Dosages</h4>
+              <div class="clinical-content" id="full-history-medications">
+                <div class="med-table-wrap">
+                  <table class="clinical-table">
+                    <thead>
+                      <tr>
+                        <th>Medication</th>
+                        <th>Dosage</th>
+                        <th>Frequency</th>
+                        <th>Indication</th>
+                      </tr>
+                    </thead>
+                    <tbody id="full-meds-table-body">
+                      <tr>
+                        <td><strong>Albuterol Sulfate Inhaler</strong></td>
+                        <td>90 mcg / actuation</td>
+                        <td>1–2 puffs Q4-6H PRN</td>
+                        <td>Acute Bronchospasm</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Budesonide (Pulmicort)</strong></td>
+                        <td>200 mcg / inhalation</td>
+                        <td>Once daily (Morning)</td>
+                        <td>Asthma Controller</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Cetirizine HCl</strong></td>
+                        <td>10 mg tablet</td>
+                        <td>Once daily PRN</td>
+                        <td>Seasonal Allergies</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- Section 3: Baseline Clinical Vitals & Labs -->
+            <div class="clinical-section-card">
+              <h4 class="clinical-section-title">3. Baseline Clinical Vitals &amp; Laboratory Norms</h4>
+              <div class="clinical-content">
+                <div class="vitals-matrix-grid">
+                  <div class="vital-matrix-item">
+                    <span class="v-label">Resting Blood Pressure:</span>
+                    <span class="v-val">118/76 mmHg</span>
+                  </div>
+                  <div class="vital-matrix-item">
+                    <span class="v-label">Resting Heart Rate:</span>
+                    <span class="v-val">68 bpm (Sinus Rhythm)</span>
+                  </div>
+                  <div class="vital-matrix-item">
+                    <span class="v-label">Baseline SpO2:</span>
+                    <span class="v-val">98% on room air</span>
+                  </div>
+                  <div class="vital-matrix-item">
+                    <span class="v-label">Fasting Blood Glucose:</span>
+                    <span class="v-val">92 mg/dL (Normal)</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Section 4: Uploaded Diagnostic Documents -->
+            <div class="clinical-section-card">
+              <h4 class="clinical-section-title">4. Patient Uploaded Medical Records &amp; Documents</h4>
+              <div class="clinical-content" id="full-history-docs">
+                <ul class="uploaded-docs-list">
+                  <li class="doc-item">
+                    <span class="doc-icon">📄</span>
+                    <div class="doc-meta">
+                      <strong>Pulmonary Function Test (PFT) Report (PDF)</strong>
+                      <small>Uploaded by patient on 12 Jan 2026 • FEV1/FVC Ratio: 82%</small>
+                    </div>
+                    <span class="doc-verified-badge">Verified</span>
+                  </li>
+                  <li class="doc-item">
+                    <span class="doc-icon">📄</span>
+                    <div class="doc-meta">
+                      <strong>Penicillin Allergy Confirmation &amp; Anaphylaxis Workup (PDF)</strong>
+                      <small>Apollo Diagnostic Center • IgE RAST Positive</small>
+                    </div>
+                    <span class="doc-verified-badge">Verified</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Security Audit Notice -->
+            <div class="audit-logging-notice">
+              <small>🔒 <strong>Access Audit Logged:</strong> Record viewed on <span id="audit-timestamp">today</span> by License ID: MED-9942. An automated security notification has been recorded for the patient.</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================================================================= -->
+  <!-- MODAL 2: PATIENT PORTAL (REGISTER & UPLOAD RECORDS)               -->
+  <!-- ================================================================= -->
+  <div class="modal-overlay hidden" id="patient-modal" role="dialog" aria-modal="true" aria-labelledby="patient-modal-title">
+    <div class="modal-card patient-modal-card">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <span class="modal-icon">👤</span>
+          <h3 class="modal-title" id="patient-modal-title">Patient Portal: Manage Your Emergency &amp; Medical Records</h3>
+        </div>
+        <button type="button" class="modal-close-btn" id="btn-close-patient-modal" aria-label="Close Patient Portal">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <p class="portal-intro-sub">
+          Register your personal Medilink profile. Information entered here powers the <strong>instant public flash message</strong> for first responders and stores your <strong>full medical history</strong> for authorized doctors.
+        </p>
+
+        <form id="form-patient-records" class="patient-record-form">
+          <!-- PART 1: EMERGENCY FLASH MESSAGE SETTINGS (PUBLIC TIER) -->
+          <div class="form-section-box">
+            <h4 class="form-section-heading">
+              <span class="sec-num">PART 1</span>
+              <span>Emergency Flash Information (Displayed on NFC Tap)</span>
+            </h4>
+
+            <div class="form-row-2">
+              <div class="form-group">
+                <label for="form-patient-name" class="form-label">Full Name:</label>
+                <input type="text" id="form-patient-name" class="form-input" required value="Aarav Sharma">
+              </div>
+              <div class="form-group">
+                <label for="form-patient-blood" class="form-label">Blood Group:</label>
+                <select id="form-patient-blood" class="form-select" required>
+                  <option value="O+" selected>O+ (O Positive)</option>
+                  <option value="O-">O- (O Negative)</option>
+                  <option value="A+">A+ (A Positive)</option>
+                  <option value="A-">A- (A Negative)</option>
+                  <option value="B+">B+ (B Positive)</option>
+                  <option value="B-">B- (B Negative)</option>
+                  <option value="AB+">AB+ (AB Positive)</option>
+                  <option value="AB-">AB- (AB Negative)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row-2">
+              <div class="form-group">
+                <label for="form-patient-dob" class="form-label">Date of Birth:</label>
+                <input type="text" id="form-patient-dob" class="form-input" value="14/08/1996" placeholder="DD/MM/YYYY">
+              </div>
+              <div class="form-group">
+                <label for="form-patient-gender" class="form-label">Gender:</label>
+                <select id="form-patient-gender" class="form-select">
+                  <option value="Male" selected>Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other / Non-Binary</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="form-patient-allergy" class="form-label">Severe Allergies (Immediate Anaphylaxis / Drug Warnings):</label>
+              <input type="text" id="form-patient-allergy" class="form-input" required value="Penicillin (Severe Anaphylaxis Risk. Avoid Beta-lactams)">
+            </div>
+
+            <div class="form-group">
+              <label for="form-patient-condition" class="form-label">Critical Medical Notes (For Injured or Unconscious Person):</label>
+              <textarea id="form-patient-condition" class="form-textarea" rows="2" required>Severe Asthma: Uses Albuterol rescue inhaler. Keep upright. Inhaler in backpack/pocket.</textarea>
+            </div>
+
+            <div class="form-row-2">
+              <div class="form-group">
+                <label for="form-contact-name" class="form-label">Primary Emergency Contact Name &amp; Relation:</label>
+                <input type="text" id="form-contact-name" class="form-input" required value="Sunita Sharma (Spouse)">
+              </div>
+              <div class="form-group">
+                <label for="form-contact-phone" class="form-label">Emergency Phone Number:</label>
+                <input type="tel" id="form-contact-phone" class="form-input" required value="+91 90000 00000">
+              </div>
+            </div>
+          </div>
+
+          <!-- PART 2: FULL CLINICAL HISTORY (ACCESSIBLE TO DOCTORS / EMTs) -->
+          <div class="form-section-box">
+            <h4 class="form-section-heading">
+              <span class="sec-num">PART 2</span>
+              <span>Full Medical History (Encrypted &amp; Unlocked for Doctors/Paramedics)</span>
+            </h4>
+
+            <div class="form-group">
+              <label for="form-surgeries" class="form-label">Past Surgeries &amp; Chronic Illness Diagnoses:</label>
+              <textarea id="form-surgeries" class="form-textarea" rows="2">Appendectomy (2018) laparoscopic; Childhood Asthma diagnosed 2006; Sports concussion 2021.</textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="form-prescriptions" class="form-label">Current Prescription Medications &amp; Daily Dosages:</label>
+              <textarea id="form-prescriptions" class="form-textarea" rows="2">Albuterol Inhaler 90mcg (1-2 puffs as needed); Budesonide 200mcg (once daily morning); Cetirizine 10mg PRN.</textarea>
+            </div>
+
+            <div class="form-row-2">
+              <div class="form-group">
+                <label for="form-hospital" class="form-label">Preferred Hospital / Trauma Center:</label>
+                <input type="text" id="form-hospital" class="form-input" value="City Memorial Hospital &amp; Trauma Center">
+              </div>
+              <div class="form-group">
+                <label for="form-insurance" class="form-label">Insurance Provider &amp; Policy Number:</label>
+                <input type="text" id="form-insurance" class="form-input" value="MediShield National • Policy #ML-99824">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Upload Medical Documents / Prescriptions / Lab Reports:</label>
+              <div class="mock-upload-dropzone" id="mock-dropzone">
+                <span class="upload-icon">📎</span>
+                <span class="upload-text">Choose file or drag &amp; drop PDF/JPG medical reports</span>
+                <input type="file" id="patient-doc-upload" class="file-input-hidden" accept=".pdf,.jpg,.jpeg,.png">
+              </div>
+              <div id="upload-status-list" class="upload-status-list">
+                <div class="file-tag">✓ PFT_Report_2026.pdf (Attached)</div>
+                <div class="file-tag">✓ Allergy_Workup_Confirmed.pdf (Attached)</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SUBMIT ACTION & NFC WRISTBAND URL PREVIEW -->
+          <div class="form-actions-footer">
+            <button type="submit" class="btn btn-primary btn-lg" id="btn-save-patient-profile">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                <polyline points="7 3 7 8 15 8"></polyline>
+              </svg>
+              <span>Save &amp; Update My Medilink Profile</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================================================================= -->
+  <!-- TOAST NOTIFICATION POPUP                                          -->
+  <!-- ================================================================= -->
+  <div id="toast" class="toast-popup" role="status" aria-live="polite">
+    <div class="toast-inner">
+      <span class="toast-icon">✓</span>
+      <span class="toast-msg" id="toast-msg">Notification message</span>
+    </div>
+  </div>
+
+  <!-- ================================================================= -->
+  <!-- SITE FOOTER                                                       -->
+  <!-- ================================================================= -->
+  <footer class="site-footer">
+    <div class="container footer-container">
+      <div class="footer-col footer-col-brand">
+        <div class="footer-logo">
+          <span class="footer-logo-text">MEDILINK</span>
+        </div>
+        <p class="footer-tagline">
+          Emergency Medical Access, One Tap Away.
+        </p>
+        <p class="footer-helpline-tag">
+          In a life-threatening emergency, contact local ambulance services immediately (112 / 911 / 108).
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h4 class="footer-col-title">Navigation</h4>
+        <ul class="footer-links">
+          <li><a href="#hero">Home</a></li>
+          <li><a href="#scanner">Scan Wristband</a></li>
+          <li><a href="#profile">Emergency Flash Info</a></li>
+          <li><a href="#doctor-modal" class="footer-doc-link">Doctor Portal</a></li>
+          <li><a href="#patient-modal" class="footer-pat-link">Patient Sign In</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4 class="footer-col-title">Emergency Access</h4>
+        <p class="footer-repo-desc">
+          Medilink passive silicone wristbands operate through induction with zero battery dependency, allowing instant NFC tap access worldwide.
+        </p>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="container footer-bottom-inner">
+        <p class="copyright-text">
+          &copy; 2026 Medilink Emergency Healthcare Systems. All rights reserved.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./script.js"></script>
+</body>
+</html>
